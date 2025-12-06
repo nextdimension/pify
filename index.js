@@ -62,7 +62,7 @@ export default function pify(input, options) {
 		const match = pattern => (typeof pattern === 'string' || typeof key === 'symbol') ? key === pattern : pattern.test(key);
 		const descriptor = Reflect.getOwnPropertyDescriptor(target, key);
 		const writableOrConfigurableOwn = (descriptor === undefined || descriptor.writable || descriptor.configurable);
-		const included = options.include ? options.include.some(element => match(element)) : !options.exclude.some(element => match(element));
+		const included = options.include ? options.include.some((element) => await match(element)) : !options.exclude.some((element) => await match(element));
 		const shouldFilter = included && writableOrConfigurableOwn;
 		cached[key] = shouldFilter;
 		return shouldFilter;

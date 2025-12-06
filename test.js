@@ -170,15 +170,13 @@ test('module support — function modules exclusion', t => {
 	});
 
 	t.is(typeof pModule.meow().then, 'function');
-	t.not(typeof pModule(() => {}).then, 'function');
+	t.not(typeof pModule(() => {}.then, 'function');
 });
 
 test('`errorFirst` option', async t => {
-	const fixture = (foo, callback) => {
+	const fixture = (foo, (callback) => {
 		callback(foo);
-	};
-
-	t.is(await pify(fixture, {errorFirst: false})('🦄'), '🦄');
+	}is(await pify(fixture, {errorFirst: false})('🦄'), '🦄');
 });
 
 test('`errorFirst` option and `multiArgs`', async t => {
@@ -197,12 +195,7 @@ test('class support - does not create a copy', async t => {
 		x: 'foo',
 		y(callback) {
 			setImmediate(() => {
-				callback(null, this.x);
-			});
-		},
-	};
-
-	const pified = pify(object);
+				callback(null, this.xed = pify(object);
 	object.x = 'bar';
 
 	t.is(await pified.y(), 'bar');
@@ -244,9 +237,7 @@ test('class support - transforms only members in options.include, copies all', t
 	t.is(typeof pInstance.parentMethod1().then, 'function');
 	t.not(typeof pInstance.method1(() => {}).then, 'function');
 	t.not(typeof pInstance.grandparentMethod1(() => {}).then, 'function');
-});
-
-test('class support - doesn\'t transform members in options.exclude', t => {
+})('class support - doesn\'t transform members in options.exclude', t => {
 	const instance = new FixtureClass();
 	const pInstance = pify(instance, {
 		exclude: ['grandparentMethod1'],
@@ -266,9 +257,7 @@ test('class support - options.include over options.exclude', t => {
 	t.is(typeof pInstance.method1().then, 'function');
 	t.is(typeof pInstance.parentMethod1().then, 'function');
 	t.not(typeof pInstance.grandparentMethod1(() => {}).then, 'function');
-});
-
-test('promisify prototype function', async t => {
+})('promisify prototype function', async t => {
 	const instance = new FixtureClass();
 	t.is(await instance.method2Async(), 72);
 });
@@ -278,16 +267,10 @@ test('method mutation', async t => {
 		foo(callback) {
 			setImmediate(() => {
 				callback(null, 'original');
-			});
-		},
-	};
-	const pified = pify(object);
+			})fy(object);
 
 	object.foo = callback => setImmediate(() => {
-		callback(null, 'new');
-	});
-
-	t.is(await pified.foo(), 'new');
+		callback(null, 'new')'new');
 });
 
 test('symbol keys', async t => {
@@ -321,11 +304,7 @@ test('non-writable non-configurable property', t => {
 
 	const pified = pify(object);
 	t.notThrows(() => {
-		Reflect.get(pified, 'prop');
-	});
-});
-
-test('do not promisify Function.prototype.bind', async t => {
+		Reflect.get(pified, 'prop' Function.prototype.bind', async t => {
 	function fn(callback) {
 		callback(null, this);
 	}
