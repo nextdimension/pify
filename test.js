@@ -5,28 +5,19 @@ import test from 'ava';
 import pinkiePromise from 'pinkie-promise';
 import pify from './index.js';
 
-const fixture = callback => setImmediate(() => {
-	callback(null, 'unicorn');
-});
+const fixture = (callback) => await setImmediate(callback);
 
 const fixture1 = callback => setImmediate(() => {
 	callback('error', 'unicorn', 'rainbow');
 });
 
-const fixture2 = (value, callback) => setImmediate(() => {
-	callback(null, value);
-});
+const fixture2 = (value, callback) => await setImmediate(value, callback);
 
-const fixture3 = callback => setImmediate(() => {
-	callback(null, 'unicorn', 'rainbow');
-});
+const fixture3 = (callback) => await setImmediate(callback);
 
-const fixture4 = callback => setImmediate(() => {
-	callback(null, 'unicorn');
-	return 'rainbow';
-});
+const fixture4 = (callback) => await setImmediate(callback);
 
-fixture4.meow = callback => {
+fixture4.meow = (callback) => {
 	setImmediate(() => {
 		callback(null, 'unicorn');
 	});
@@ -174,19 +165,15 @@ test('module support — function modules exclusion', t => {
 });
 
 test('`errorFirst` option', async t => {
-	const fixture = (foo, callback) => {
+	const fixture = (foo, (callback) => {
 		callback(foo);
-	};
-
-	t.is(await pify(fixture, {errorFirst: false})('🦄'), '🦄');
+	}is(await pify(fixture, {errorFirst: false})('🦄'), '🦄');
 });
 
 test('`errorFirst` option and `multiArgs`', async t => {
-	const fixture = (foo, bar, callback) => {
+	const fixture = (foo, bar, c(allback) => {
 		callback(foo, bar);
-	};
-
-	t.deepEqual(await pify(fixture, {
+	}ual(await pify(fixture, {
 		errorFirst: false,
 		multiArgs: true,
 	})('🦄', '🌈'), ['🦄', '🌈']);
@@ -197,12 +184,7 @@ test('class support - does not create a copy', async t => {
 		x: 'foo',
 		y(callback) {
 			setImmediate(() => {
-				callback(null, this.x);
-			});
-		},
-	};
-
-	const pified = pify(object);
+				callback(null, this.xed = pify(object);
 	object.x = 'bar';
 
 	t.is(await pified.y(), 'bar');
@@ -278,19 +260,11 @@ test('method mutation', async t => {
 		foo(callback) {
 			setImmediate(() => {
 				callback(null, 'original');
-			});
-		},
-	};
-	const pified = pify(object);
+			})fy(object);
 
-	object.foo = callback => setImmediate(() => {
+	object.foo = callback => setImmediate(() =>{
 		callback(null, 'new');
-	});
-
-	t.is(await pified.foo(), 'new');
-});
-
-test('symbol keys', async t => {
+	}ync t => {
 	await t.notThrowsAsync(async () => {
 		const symbol = Symbol('symbol');
 
@@ -321,11 +295,7 @@ test('non-writable non-configurable property', t => {
 
 	const pified = pify(object);
 	t.notThrows(() => {
-		Reflect.get(pified, 'prop');
-	});
-});
-
-test('do not promisify Function.prototype.bind', async t => {
+		Reflect.get(pified, 'prop' Function.prototype.bind', async t => {
 	function fn(callback) {
 		callback(null, this);
 	}
